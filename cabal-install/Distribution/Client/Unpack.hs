@@ -37,6 +37,7 @@ import Distribution.Client.FetchUtils
 import qualified Distribution.Client.Tar as Tar (extractTarGzFile)
 import Distribution.Client.IndexUtils as IndexUtils
         ( getSourcePackages )
+import Distribution.Client.Sumfile (sumfileParse, sumfileVerify)
 
 import System.Directory
          ( createDirectoryIfMissing, doesDirectoryExist, doesFileExist )
@@ -126,6 +127,17 @@ unpackPackage verbosity prefix pkgid descOverride pkgPath = do
      "A file \"" ++ pkgdir ++ "\" is in the way, not unpacking."
     notice verbosity $ "Unpacking to " ++ pkgdir'
     Tar.extractTarGzFile prefix pkgdirname pkgPath
+    existsSum <- doesFileExist (pkgdir </> "SUMS")
+    if existsSum
+      then do sumfile <- sumfileParse (pkgdir </> "SUMS")
+              ret     <- sumfileVerify pkgdir sumfile
+              case ret of
+                Nothing  -> return ()
+                Just err -> die err
+      else do -- FIXME: when the sum file is missing,
+              -- there should be a flag to either ignore or not the problem,
+              -- or the user should be ask if this is OK.
+              return ()
 
     case descOverride of
       Nothing     -> return ()
