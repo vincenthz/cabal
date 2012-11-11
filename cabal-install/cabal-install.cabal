@@ -22,7 +22,7 @@ Copyright:          2005 Lemmih <lemmih@gmail.com>
                     2007-2012 Duncan Coutts <duncan@community.haskell.org>
 Category:           Distribution
 Build-type:         Simple
-Extra-Source-Files: README bash-completion/cabal bootstrap.sh
+Extra-Source-Files: README bash-completion/cabal bootstrap.sh cbits/digest.h
 Cabal-Version:      >= 1.6
 
 source-repository head
@@ -97,6 +97,7 @@ Executable cabal
         Distribution.Client.Sandbox
         Distribution.Client.Setup
         Distribution.Client.SetupWrapper
+        Distribution.Client.Sumfile.Digest
         Distribution.Client.SrcDist
         Distribution.Client.Tar
         Distribution.Client.Targets
@@ -144,3 +145,4 @@ Executable cabal
     else
       build-depends: unix >= 1.0 && < 2.7
     c-sources: cbits/getnumcores.c
+               cbits/digest.c
