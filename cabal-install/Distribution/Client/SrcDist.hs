@@ -22,6 +22,7 @@ import Distribution.Simple.Utils
          , withUTF8FileContents, writeUTF8File )
 import Distribution.Client.Setup
          ( SDistFlags(..), SDistExFlags(..), ArchiveFormat(..) )
+import Distribution.Client.Sumfile
 import Distribution.Simple.Setup
          ( fromFlag, flagToMaybe )
 import Distribution.Verbosity (Verbosity)
@@ -84,6 +85,9 @@ sdist flags exflags = do
       prepareTree verbosity pkg' mb_lbi distPref targetDir pps
       when snapshot $
         overwriteSnapshotPackageDesc verbosity pkg' targetDir
+      notice verbosity $ "Suming source dist"
+      sums <- sumfileCompute targetDir
+      sumfileWrite (targetDir </> "SUMS") sums
 
     verbosity = fromFlag (sDistVerbosity flags)
     snapshot  = fromFlag (sDistSnapshot flags)
