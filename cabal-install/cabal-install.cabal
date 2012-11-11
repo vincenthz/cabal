@@ -97,6 +97,7 @@ Executable cabal
         Distribution.Client.Sandbox
         Distribution.Client.Setup
         Distribution.Client.SetupWrapper
+        Distribution.Client.Sumfile
         Distribution.Client.Sumfile.Digest
         Distribution.Client.SrcDist
         Distribution.Client.Tar
